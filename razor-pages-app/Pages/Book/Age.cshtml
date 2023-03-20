@@ -1,0 +1,8 @@
+﻿@page "{title?}"
+@model razor_pages.Pages.Book.Age
+@{
+    Layout = "_Layout";
+}
+
+<h1>Książka ma @Model.BookAge lat.</h1>
+<h2>Title:@RouteData.Values["title"]</h2>

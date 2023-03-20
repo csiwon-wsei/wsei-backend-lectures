@@ -1,0 +1,19 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "grpc_service_app.converter.v1";
+
+package converter;
+
+service Converter {
+  rpc Convert (InputRequest) returns (OutputReply);
+}
+
+message InputRequest {
+  double value = 1;
+  string unit = 2;
+}
+
+message OutputReply {
+  double value = 1;
+  string unit = 2;
+}

@@ -1,0 +1,32 @@
+﻿<tr>
+    <td>@Id</td>
+    @if (IsEdited)
+    {
+        <td><input type="text" name="title" @bind="Title"/></td>   
+    }
+    else
+    {
+        <td>@Title</td>
+    }
+    <td>@Deadline</td>
+    <td><input type="checkbox" @bind="IsDone" disabled="@Disabled"></td>
+    <td><button type="button" @onclick="Click">Edit</button></td>
+</tr>
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+    [Parameter]
+    public DateTime Deadline { get; set; }
+    [Parameter]
+    public int Id { get; set; }
+    [Parameter] 
+    public bool IsDone { get; set; }
+    [Parameter]
+    public EventCallback<MouseEventArgs> Click {get; set;}
+    [Parameter]
+    public bool IsEdited { get; set; }
+    [Parameter]
+    public bool Disabled { get; set; }
+}
+

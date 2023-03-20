@@ -1,0 +1,14 @@
+﻿@page "/todo/create"
+<PageTitle>Create Todo Task</PageTitle>
+<h3>CreateToDo</h3>
+<form>
+    <input @bind="Title" />
+    <input @bind="Deadline" />
+    <input @bind="IsDone"/>
+    <button type="button">Dodaj</button>
+</form>
+@code {
+    private string Title { get; set; }
+    private DateTime Deadline { get; set; }
+    private bool IsDone { get; set; }
+}
