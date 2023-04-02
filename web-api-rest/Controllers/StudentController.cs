@@ -6,6 +6,7 @@ using core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace web_api_rest.Controllers;
 
@@ -14,28 +15,78 @@ namespace web_api_rest.Controllers;
 public class StudentsController : ControllerBase
 {
     private readonly ISchoolService _service;
+    
     private static StudentPayments payments = new StudentPayments() { StudentId = 1, Payments = new List<decimal>() { 10, 20, 30 }, AccountNumber = "12345679000"};
     public StudentsController(ISchoolService service)
     {
         _service = service;
     }
-
-    [HttpGet]
+    
+    /**
+     * Metoda aynchroniczna zwracająca listę, serwis zwraca obiekty domentowe, kontroler mapuje na obiekty DTO.
+     * Uwaga!
+     * Metoda może zwracać tylko JSON, serializer XML nie obsługuje słownika IDictionery!
+     * Atrybut [Produces] ogranicza możliwe typy odpowiedzi
+     */
+     
+    [HttpGet("dto")]
+    [Produces("application/json")]
     public async Task<List<DtoStudent>> GetAll()
     {
         return (await _service.FindAllAsync()).Select(s => StudentMapper.ToDtoStudent(s)).ToList();
+    }
+    
+    [HttpGet("/text")]
+    public ContentResult Text()
+    {
+        return new ContentResult() {Content = "Hello"};
         
     }
+    /**
+     * Metoda generuje błąd, obiekty kolekcji mają cykle -referencje do samych siebie
+     */
+    [AcceptVerbs("GET")]
+    [HttpGet(), Route("cycles")]
+    public async IAsyncEnumerable<Student> GetByName(string name)
+    {
+        foreach (var st in (await _service.FindAllAsync()).Where(s => s.FirstName == name).AsEnumerable())
+        {
+             yield return st;
+        }
+    }
 
+    /**
+     * Metoda zwraca obiekty pozbawione cykli
+     */
+    [AcceptVerbs("GET")]
+    [HttpGet(), Route("nocycles")]
+    public async IAsyncEnumerable<Object> GetByNameNoCycles(string name)
+    {
+        foreach (var st in _service.FindAllAsync().Result.Where(s => s.FirstName == name))
+        {
+            yield return new
+            {
+                Id = st.Id, 
+                FirstName = st.FirstName,
+                LastName = st.LastName, 
+                Phone = st.Phone,
+                Group = st.StudentGroup.Name
+            };
+        }
+    }
+
+    [HttpPost]
+    public void PostNewStudent(NewStudent student)
+    {
+        _service.AddStudent(student);
+    }
+    
     [HttpGet]
     [Route("{id:int}")]
     public async Task<DtoStudent> Get(int id)
     {
         return StudentMapper.ToDtoStudent(await _service.FindStudentByIdAsync(id));
     }
-    
-    
-    
     
     [HttpGet("text")]
     public ContentResult GetContent()
@@ -63,27 +114,18 @@ public class StudentsController : ControllerBase
         );
     }
 
-    [HttpPost]
-    public string Post(Student student)
-    {
-        return student.ToString();
-    }
-
     [HttpPatch]
     [Route("payments/{studentId:int}"), Produces("application/json")]
     public IActionResult AddPayment(int studentId, [FromBody] JsonPatchDocument<StudentPayments> patchDoc)
     {
-       
         if (patchDoc != null)
         {
-            
             patchDoc.ApplyTo(payments, ModelState);
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
             return new ObjectResult(payments);
         }
         return BadRequest(ModelState);        

@@ -25,8 +25,8 @@ public class NewStudent
         Phone = phone;
         Birth = birth;
     }
+
     [JsonExtensionData(WriteData = true)]
     [JsonProperty(PropertyName = "details")]
-    public IDictionary<string, JToken> ExtraData { set; get; }
-
+    public IDictionary<string, JToken> ExtraData { set; get; } = new Dictionary<string, JToken>();
 }

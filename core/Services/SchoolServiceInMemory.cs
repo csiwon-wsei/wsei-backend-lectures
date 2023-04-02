@@ -64,4 +64,9 @@ public class SchoolServiceInMemory: ISchoolService
         _groups[_groupId.Next] = new StudentGroup(id: _groupId.Current, name: group.Name);
         return _groups[_groupId.Current];
     }
+
+    public void RemoveById(int id)
+    {
+        _students.Remove(id);
+    }
 }

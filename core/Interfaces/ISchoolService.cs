@@ -17,4 +17,6 @@ public interface ISchoolService
     bool UpdateStudentGroup(StudentGroup student);
     
     StudentGroup AddGroup(NewStudentGroup group);
+
+    public void RemoveById(int id);
 }

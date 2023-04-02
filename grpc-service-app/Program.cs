@@ -9,10 +9,10 @@ builder.Services.AddGrpc(option =>
     option.Interceptors.Add<ExceptionInterceptor>();
 });
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.MapGrpcService<GreeterService>();
 app.MapGrpcService<ConverterService>();
 app.MapGet("/",
     () =>

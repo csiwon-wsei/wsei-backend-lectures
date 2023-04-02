@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddSoapCore();
+builder.Services.AddSoapCore();     //SOAP
 builder.Services.AddMvc();
 
 builder.Services.TryAddSingleton<IUserAppService, SoapUserAppService>();
@@ -25,12 +25,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
-
 app.UseAuthorization();
 
 app.MapRazorPages();
 app.UseEndpoints(endpoints => {
     endpoints.UseSoapEndpoint<IUserAppService>("/Service.svc", new SoapEncoderOptions(), SoapSerializer.DataContractSerializer);
-});
+});         //SOAP
 app.Run();

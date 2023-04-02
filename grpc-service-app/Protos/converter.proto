@@ -6,6 +6,7 @@ package converter;
 
 service Converter {
   rpc Convert (InputRequest) returns (OutputReply);
+  rpc ConvertStream (stream InputRequest) returns (stream OutputReply);
 }
 
 message InputRequest {

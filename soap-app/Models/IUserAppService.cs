@@ -1,9 +1,12 @@
 ﻿using System.ServiceModel;
 
 namespace soap_app.Models;
-[ServiceContract]
+[ServiceContract(Namespace = "http://wsei.edu.pl/")]
 public interface IUserAppService
 {
-        [OperationContract]
-        AppUser Register(string name, string email, int id);
+        [OperationContract(Action = "register1")]
+        RegisteredUser Register1(string name, string email);
+        
+        [OperationContract(Action = "register2")]
+        RegisteredUser Register2(AppUser user);
 }

@@ -39,4 +39,9 @@ public class SchoolServiceEFInMemory: ISchoolService
     {
         throw new NotImplementedException();
     }
+
+    public void RemoveById(int id)
+    {
+        throw new NotImplementedException();
+    }
 }

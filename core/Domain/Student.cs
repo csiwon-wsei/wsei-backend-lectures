@@ -1,7 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace core.Models;
-
+[XmlRoot]
 public class Student
 {
     public Student(int id, string firstName, string lastName, string phone, StudentGroup studentGroup, DateOnly birth)
@@ -29,6 +30,11 @@ public class Student
     public StudentGroup StudentGroup { get; init; }
     
     public DateOnly Birth { get; init; }
+
+    public string GetFullName()
+    {
+        return $"{FirstName}, {LastName}";
+    }
 
     public override string ToString()
     {

@@ -1,11 +1,11 @@
 ﻿syntax = "proto3";
-
-option csharp_namespace = "grpc_service_app.converter.v1";
+option csharp_namespace = "grpc_client_app.converter.v1";
 
 package converter;
 
 service Converter {
   rpc Convert (InputRequest) returns (OutputReply);
+  rpc ConvertStream (stream InputRequest) returns (stream OutputReply);
 }
 
 message InputRequest {

@@ -1,7 +1,5 @@
 ﻿using System.Xml.Linq;
-
 namespace soap_app.Models;
-
 public class SoapUserAppService: IUserAppService
 {
     private readonly ILogger _logger;
@@ -22,10 +20,20 @@ public class SoapUserAppService: IUserAppService
         _logger.LogInformation($"XmlMethod {xml}");
     }
 
-    public AppUser Register(string name, string email, int id)
+    public RegisteredUser Register1(string name, string email)
     {
-        var model = new AppUser() {Name = name, Email = email, Id = id};
+        var model = new RegisteredUser() {Name = name, Email = email, Id = Random.Shared.Next(1,100)};
         _logger.LogInformation($"Register {model.Id} {model.Email} {model.Name}");
         return model;
+    }
+
+    public RegisteredUser Register2(AppUser user)
+    {
+        return new RegisteredUser()
+        {
+            Name = user.Name,
+            Email = user.Email,
+            Id= Random.Shared.Next(1, 100)
+        };
     }
 }
