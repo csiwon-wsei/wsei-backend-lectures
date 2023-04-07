@@ -12,11 +12,12 @@ public interface ISchoolService
 
     void AssignStudentToGroup(int studentId, int groupId);
 
-    Student AddStudent(NewStudent student);
+    Student AddStudent(NewStudent newStudent);
 
     bool UpdateStudentGroup(StudentGroup student);
     
     StudentGroup AddGroup(NewStudentGroup group);
 
     public void RemoveById(int id);
+    public void ReplaceStudentGroup(int studentId, int groupId);
 }

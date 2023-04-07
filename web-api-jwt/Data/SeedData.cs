@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -8,18 +9,7 @@ namespace web_api_jwt.Data;
 
 public static class SeedData
 {
-    public static void AddRoles(this EntityTypeBuilder<IdentityRole> builder)
-    {
-        builder.HasData(
-            new IdentityRole()
-            {
-                Name = "admin",
-                NormalizedName = "ADMIN"
-            }
-        );
-    }
-
-    public static async void AddUsers(this IApplicationBuilder app)
+    public static async void CreateUsers(this IApplicationBuilder app)
     {
         int a = 10;
         using (var scope = app.ApplicationServices.CreateScope())
@@ -45,38 +35,53 @@ public static class SeedData
             }
         }
     }
-
-    public static void AddBooks(this EntityTypeBuilder<Book> builder)
+    
+    public static List<IdentityRole> CreateRoles()
+    {
+        return new List<IdentityRole>()
         {
-            builder.HasData(
-                new Book
-                {
-                    Id = 1,
-                    Title = "C#",
-                    EditionYear = 2020
-                },
-                new Book
-                {
-                    Id = 2,
-                    Title = "Java",
-                    EditionYear = 2022
-                },
-                new Book
-                {
-                    Id = 3,
-                    Title = "ASP.NET",
-                    EditionYear = 2023
-                }
-            );
-        }
-
-        public static void EnsureDataSeed(this IApplicationBuilder builder)
-        {
-            int a = 10;
-            using (var scope = builder.ApplicationServices.CreateScope())
+            new IdentityRole()
             {
-                var context = scope.ServiceProvider.GetService<AppDbContext>();
-                context.Database.EnsureCreated();
+                Name = "admin",
+                NormalizedName = "ADMIN"
             }
+        };
+    }
+    
+
+    public static IEnumerable<Book> CreateBooks()
+    {
+        return new List<Book>()
+        {
+            new()
+            {
+                Id = 1,
+                Title = "C#",
+                EditionYear = 2020
+            },
+            new()
+            {
+                Id = 2,
+                Title = "Java",
+                EditionYear = 2022
+            },
+            new()
+            {
+                Id = 3,
+                Title = "ASP.NET",
+                EditionYear = 2023
+            }
+        };
+    }
+
+    public static void EnsureDataSeed(this IApplicationBuilder builder)
+    {
+        using (var scope = builder.ApplicationServices.CreateScope())
+        {
+            var context = scope.ServiceProvider.GetService<AppDbContext>();
+            context?.Books.AddRange(CreateBooks());
+            context?.Roles.AddRange(CreateRoles());
+            context?.SaveChanges();
         }
     }
+}

@@ -17,22 +17,13 @@ public class AppDbContext:IdentityDbContext<IdentityUser>
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
-        var folder = Environment.SpecialFolder.LocalApplicationData;
-        var path = Environment.GetFolderPath(folder);
-        DbPath = Path.Join(path, "books.db");
+        // var folder = Environment.SpecialFolder.LocalApplicationData;
+        // var path = Environment.GetFolderPath(folder);
+        // DbPath = Path.Join(path, "books.db");
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseInMemoryDatabase("AppDb");
     }
-
-    protected override void OnModelCreating(ModelBuilder builder)
-    {
-        base.OnModelCreating(builder);
-        builder.Entity<IdentityRole>().AddRoles();
-        builder.Entity<Book>().AddBooks();
-    }
-    
-    
 }

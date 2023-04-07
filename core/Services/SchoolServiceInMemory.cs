@@ -36,14 +36,14 @@ public class SchoolServiceInMemory: ISchoolService
         }
     }
 
-    public Student AddStudent(NewStudent student)
+    public Student AddStudent(NewStudent newStudent)
     {
         _students[_studentId.Next] = new Student(
             id: _studentId.Current, 
-            firstName: student.FirstName,
-            lastName: student.LastName,
-            birth: student.Birth,
-            phone: student.Phone,
+            firstName: newStudent.FirstName,
+            lastName: newStudent.LastName,
+            birth: newStudent.Birth,
+            phone: newStudent.Phone,
             studentGroup: null
             );
         return _students[_studentId.Current];
@@ -68,5 +68,10 @@ public class SchoolServiceInMemory: ISchoolService
     public void RemoveById(int id)
     {
         _students.Remove(id);
+    }
+
+    public void ReplaceStudentGroup(int studentId, int groupId)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -20,7 +20,7 @@ public class DtoStudent
     
     [JsonProperty(PropertyName = "birthDate")]
     public DateOnly Birth { get; init; }
-    
+
     [JsonExtensionData(WriteData = true)]
     [JsonProperty(PropertyName = "details")]
     public IDictionary<string, JToken> ExtraData { set; get; }
