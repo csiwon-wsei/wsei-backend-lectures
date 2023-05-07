@@ -37,7 +37,7 @@ public class WebApiRestMinimal
             options.AddPolicy(name: MyAllowSpecificOrigins,
                 builder =>
                 {
-                    builder.WithOrigins("http://www.record-it.pl",
+                    builder.WithOrigins("http://www.wsei.edu.pl",
                         "127.0.0.0");
                 });
         });
