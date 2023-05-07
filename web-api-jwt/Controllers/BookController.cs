@@ -26,7 +26,6 @@ public class BookController: ControllerBase
 
     [HttpGet] 
     [Authorize(Policy = "Bearer")]
-    [Authorize(Policy = "Email")]
     public async Task<List<Book>> GetBooks()
     {
         var user = await GetCurrentUser();

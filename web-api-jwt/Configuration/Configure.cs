@@ -9,6 +9,21 @@ namespace web_api_jwt.Data;
 
 public static class Configure
 {
+
+    public static void ConfigureCors(this IServiceCollection services)
+    {
+        services.AddCors(options =>
+        {
+            options.AddPolicy(
+                "CorsPolicy", 
+                builder => 
+                    builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+        });
+    }
+    
     public static void ConfigureIdentity(this IServiceCollection services)
     {
         services

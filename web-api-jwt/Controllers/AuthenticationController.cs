@@ -10,7 +10,7 @@ using web_api_jwt.Models;
 
 namespace web_api_jwt.Controllers;
 
-[ApiController, Route("/api/authentication")]
+[ApiController, Route("/api/v1/authentication")]
 public class AuthenticationController : ControllerBase
 {
     private readonly UserManager<IdentityUser> _manager;

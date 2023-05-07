@@ -1,4 +1,6 @@
-﻿namespace core.Models;
+﻿using core.Domain;
+
+namespace core.Models;
 
 public class DtoStudentGroup
 {

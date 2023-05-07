@@ -1,4 +1,4 @@
-﻿namespace core.Models;
+﻿namespace core.Domain;
 
 public class StudentGroup
 {
@@ -9,11 +9,23 @@ public class StudentGroup
 
     public IEnumerable<Student> Students => _students.AsEnumerable();
 
+    public StudentGroup()
+    {
+        _students = new HashSet<Student>();
+    }
+    
     public StudentGroup(int id, string name)
     {
         Id = id;
         Name = name;
         _students = new HashSet<Student>();
+    }
+
+    public StudentGroup(int id, string name, ISet<Student> students)
+    {
+        _students = students;
+        Id = id;
+        Name = name;
     }
 
     public bool AddStudent(Student student)
@@ -44,7 +56,8 @@ public class StudentGroup
         return Id;
     }
 
-    public StudentGroup()
+    public override string ToString()
     {
+        return $"{nameof(Id)}: {Id}, {nameof(Name)}: {Name}, {nameof(Students)}: {Students.Count()}";
     }
 }

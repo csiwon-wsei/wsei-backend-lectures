@@ -1,4 +1,5 @@
-﻿using core.Models;
+﻿using core.Domain;
+using core.Models;
 using Newtonsoft.Json.Linq;
 
 namespace core.Mappers;

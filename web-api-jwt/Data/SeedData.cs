@@ -1,8 +1,4 @@
-﻿using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.AspNetCore.Identity;
 using web_api_jwt.Models;
 
 namespace web_api_jwt.Data;

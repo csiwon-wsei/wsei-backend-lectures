@@ -1,5 +1,6 @@
 ﻿using System.Dynamic;
 using System.Text.Json;
+using core.Domain;
 using core.Interfaces;
 using core.Mappers;
 using core.Models;
@@ -33,7 +34,7 @@ public class StudentsController : ControllerBase
     [Produces("application/json")]
     public async Task<List<DtoStudent>> GetAll()
     {
-        return (await _service.FindAllAsync()).Select(s => StudentMapper.ToDtoStudent(s)).ToList();
+        return (await _service.FindAllAStudentsAsync()).Select(s => StudentMapper.ToDtoStudent(s)).ToList();
     }
     
     [HttpGet("/text")]
@@ -49,7 +50,8 @@ public class StudentsController : ControllerBase
     [HttpGet(), Route("cycles")]
     public async IAsyncEnumerable<Student> GetByName(string name)
     {
-        foreach (var st in (await _service.FindAllAsync()).Where(s => s.FirstName == name).AsEnumerable())
+        
+        foreach (var st in (await _service.FindAllAStudentsAsync()).Where(s => s.FirstName == name).AsEnumerable())
         {
              yield return st;
         }
@@ -59,10 +61,10 @@ public class StudentsController : ControllerBase
      * Metoda zwraca obiekty pozbawione cykli
      */
     [AcceptVerbs("GET")]
-    [HttpGet(), Route("nocycles")]
+    [Route("nocycles")]
     public async IAsyncEnumerable<Object> GetByNameNoCycles(string name)
     {
-        foreach (var st in _service.FindAllAsync().Result.Where(s => s.FirstName == name))
+        foreach (var st in _service.FindAllAStudentsAsync().Result.Where(s => s.FirstName == name))
         {
             yield return new
             {
@@ -76,6 +78,8 @@ public class StudentsController : ControllerBase
     }
 
     [HttpPost]
+    [Consumes("application/json")]
+    [Produces("application/json")]
     public void PostNewStudent(NewStudent student)
     {
         _service.AddStudent(student);

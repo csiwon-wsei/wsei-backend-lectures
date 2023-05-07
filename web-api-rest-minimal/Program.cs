@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using core;
+using core.Domain;
 using core.Interfaces;
 using core.Mappers;
 using core.Models;
@@ -63,7 +64,10 @@ public class WebApiRestMinimal
         app.MapGet("/instance", handler.InstanceHandler);
 
         // 
-        app.MapGet("/file", () => { return Results.Stream(File.OpenRead("c:\\data\\aa.pdf"), "application/pdf"); });
+        app.MapGet("/file", (HttpRequest request) =>
+        {
+            return Results.Stream(File.OpenRead("c:\\data\\aa.pdf"), "application/pdf");
+        });
 
         app.MapGet("/old-path", () => Results.Redirect("/new-path"));
 
@@ -110,7 +114,7 @@ public class WebApiRestMinimal
 
         group.MapGet("/",
             async ([FromServices] ISchoolService service) =>
-                (await service.FindAllAsync()).Select(StudentMapper.ToDtoStudent));
+                (await service.FindAllAStudentsAsync()).Select(StudentMapper.ToDtoStudent));
 
         group.MapGet("/{id:int}", async ([FromServices] ISchoolService service, int id)
             => StudentMapper.ToDtoStudent(await service.FindStudentByIdAsync(id))

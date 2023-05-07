@@ -1,4 +1,5 @@
-﻿using core.Interfaces;
+﻿using core.Domain;
+using core.Interfaces;
 using core.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -19,9 +20,14 @@ public class StudentGroupController : ControllerBase
 
     [HttpGet]
     [Route("{groupId:int}/students")]
-    public async Task<IEnumerable<Student>?> GetStudents(int groupId)
+    public  async IAsyncEnumerable<Student> GetStudents(int groupId)
     {
-        return (await _service.FindGroupByIdAsync(groupId))?.Students.AsEnumerable();
+        var  group = await _service.FindGroupByIdAsync(groupId);
+        var students = group.Students.AsEnumerable();
+        foreach (var s in students)
+        {
+            yield return s;
+        }
     }
     
     [HttpPatch]

@@ -1,15 +1,15 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
 using web_api_jwt.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddSingleton<JwtSettings>();
 builder.Services.ConfigureIdentity();
+builder.Services.ConfigureCors();
 builder.Services.ConfigureJWT(new JwtSettings(builder.Configuration));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
