@@ -1,18 +1,29 @@
-﻿<tr>
+﻿@using blazor_app.Data
+<tr>
     <td>@Id</td>
     @if (IsEdited)
     {
-        <td><input type="text" name="title" @bind="Title"/></td>   
+        <td style="width: 40rem">
+            <input type="text" name="title" @bind-value="Title"/>
+            <button type="button" @onclick="Edit">Save</button>
+        </td>
+        
     }
     else
     {
-        <td>@Title</td>
+        <td style="width: 40rem">@Title</td>
     }
     <td>@Deadline</td>
     <td><input type="checkbox" @bind="IsDone" disabled="@Disabled"></td>
-    <td><button type="button" @onclick="Click">Edit</button></td>
+    <td>
+        @if (!IsEdited)
+        {
+            <button type="button" @onclick="Click">Edit</button>
+        }
+    </td>
 </tr>
 
+@inject TodoService Service
 @code {
     [Parameter]
     public string Title { get; set; }
@@ -28,5 +39,11 @@
     public bool IsEdited { get; set; }
     [Parameter]
     public bool Disabled { get; set; }
+
+    private void Edit()
+    {
+        Service.UpdateTodoTitle(Title, Id);
+        IsEdited = false;
+    }
 }
 

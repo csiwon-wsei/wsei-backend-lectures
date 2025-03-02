@@ -1,4 +1,5 @@
 ﻿using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace core.Domain;
 [XmlRoot]
@@ -25,7 +26,7 @@ public class Student
     public string LastName { get; init; }
 
     public string Phone { get; init; }
-    
+    [JsonIgnore]
     public StudentGroup? StudentGroup { get; init; }
     
     public DateOnly Birth { get; init; }

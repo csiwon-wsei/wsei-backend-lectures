@@ -1,6 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using System.Formats.Asn1;
 using grpc_client_app.converter.v1;
 using Grpc.Core;
 using Grpc.Net.Client;

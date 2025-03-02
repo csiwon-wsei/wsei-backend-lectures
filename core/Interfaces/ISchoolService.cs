@@ -1,4 +1,5 @@
 ﻿using core.Domain;
+using core.Dto;
 using core.Models;
 
 namespace core.Interfaces;

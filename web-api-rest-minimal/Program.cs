@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using core;
 using core.Domain;
+using core.Dto;
 using core.Interfaces;
 using core.Mappers;
 using core.Models;

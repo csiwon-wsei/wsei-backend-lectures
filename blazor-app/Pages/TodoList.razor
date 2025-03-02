@@ -7,14 +7,21 @@
 <table class="table">
     @foreach (var item in service.FindAll())
     {
-        <TodoItem Title="@item.Title" Deadline='@item.Deadline' IsDone="@item.IsDone" IsEdited="@(IsEdit && EditedId == item.Id)" Click="@(args => OnClick(@item.Id))" Id="@item.Id" Disabled="false"></TodoItem>
+        <TodoItem
+            Title="@item.Title"
+            Deadline='@item.Deadline'
+            IsDone="@item.IsDone"
+            IsEdited="@(IsEdit && EditedId == item.Id)"
+            Click="@(args => OnClick(@item.Title, @item.Id))"
+            Id="@item.Id" Disabled="false">
+        </TodoItem>
     }
 </table>
 
 @code{
     public bool IsEdit { get; set; } = false;
     public int EditedId { get; set; } = 0;
-    public void OnClick(int id)
+    public void OnClick(string title, int id)
     {
         IsEdit = !IsEdit;
         EditedId = id;

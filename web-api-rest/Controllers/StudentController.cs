@@ -1,9 +1,12 @@
 ﻿using System.Dynamic;
+using System.Runtime.InteropServices.JavaScript;
 using System.Text.Json;
 using core.Domain;
+using core.Dto;
 using core.Interfaces;
 using core.Mappers;
 using core.Models;
+using core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +27,8 @@ public class StudentsController : ControllerBase
     }
     
     /**
-     * Metoda aynchroniczna zwracająca listę, serwis zwraca obiekty domentowe, kontroler mapuje na obiekty DTO.
+     * Metoda aynchroniczna zwracająca listę, serwis zwraca obiekty domenowe,
+     * kontroler mapuje na obiekty DTO.
      * Uwaga!
      * Metoda może zwracać tylko JSON, serializer XML nie obsługuje słownika IDictionery!
      * Atrybut [Produces] ogranicza możliwe typy odpowiedzi
@@ -44,17 +48,14 @@ public class StudentsController : ControllerBase
         
     }
     /**
-     * Metoda generuje błąd, obiekty kolekcji mają cykle -referencje do samych siebie
+     * Metoda generuje błąd, obiekty kolekcji mają cykle - referencje do samych siebie
      */
-    [AcceptVerbs("GET")]
-    [HttpGet(), Route("cycles")]
-    public async IAsyncEnumerable<Student> GetByName(string name)
+    [HttpGet] 
+    [Route("cycles")]
+    [Produces("application/json")]
+    public List<Student> GetByName()
     {
-        
-        foreach (var st in (await _service.FindAllAStudentsAsync()).Where(s => s.FirstName == name).AsEnumerable())
-        {
-             yield return st;
-        }
+        return _service.FindAllAStudentsAsync().Result;
     }
 
     /**
@@ -72,17 +73,26 @@ public class StudentsController : ControllerBase
                 FirstName = st.FirstName,
                 LastName = st.LastName, 
                 Phone = st.Phone,
-                Group = st.StudentGroup.Name
+                Group = st.StudentGroup?.Name
             };
         }
     }
 
+    /**
+     * Metoda nie zwraca poprawnego statusu odpowiedzi
+     */
     [HttpPost]
     [Consumes("application/json")]
     [Produces("application/json")]
-    public void PostNewStudent(NewStudent student)
+    public void PostNewStudent(TimeProvider time, NewStudent student)
     {
         _service.AddStudent(student);
+    }
+    
+    [HttpGet]
+    public IResult Test()
+    {
+        return Results.Empty;
     }
     
     [HttpGet]
@@ -120,7 +130,7 @@ public class StudentsController : ControllerBase
 
     [HttpPatch]
     [Route("payments/{studentId:int}"), Produces("application/json")]
-    public IActionResult AddPayment(int studentId, [FromBody] JsonPatchDocument<StudentPayments> patchDoc)
+    public IActionResult AddPayment(int studentId, [FromBody] JsonPatchDocument<StudentPayments>? patchDoc)
     {
         if (patchDoc != null)
         {

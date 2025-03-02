@@ -28,4 +28,9 @@ public class TodoService
     {
         data.Remove(id);
     }
+
+    public void UpdateTodoTitle(string title, int id)
+    {
+        data[id].Title = title;
+    }
 }
