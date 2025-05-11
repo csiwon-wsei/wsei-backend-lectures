@@ -7,19 +7,15 @@ namespace web_api_jwt.Data;
 
 public class AppDbContext:IdentityDbContext<IdentityUser>
 {
-    private readonly string DbPath;
     
     public DbSet<Book> Books {get; set;}
 
-    public AppDbContext()
+    public AppDbContext(string dbPath)
     {
     }
 
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    public AppDbContext(DbContextOptions<AppDbContext> options, string dbPath) : base(options)
     {
-        // var folder = Environment.SpecialFolder.LocalApplicationData;
-        // var path = Environment.GetFolderPath(folder);
-        // DbPath = Path.Join(path, "books.db");
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

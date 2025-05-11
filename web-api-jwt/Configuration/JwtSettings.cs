@@ -1,19 +1,12 @@
 ﻿namespace web_api_jwt.Data;
 
-public class JwtSettings
+public class JwtSettings(IConfiguration configuration)
 {
-    private static readonly string _section = "JwtSettings"; 
+    private const string Section = "JwtSettings";
+    public string? Issuer => configuration.GetSection(Section).GetSection("ValidIssuer").Value;
     
-    private readonly IConfiguration _configuration;
-    
-    public string? Issuer => _configuration.GetSection(_section).GetSection("ValidIssuer").Value;
-    
-    public string? Audience => _configuration.GetSection(_section).GetSection("ValidAudience").Value;
-    
-    public string? Secret => _configuration.GetSection(_section).GetSection("Secret").Value;
-    
-    public JwtSettings(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
+    public string? Audience => configuration.GetSection(Section).GetSection("ValidAudience").Value;
+    // Uwaga!!!
+    // Secret powino być zapisane w zmiennej środowiskowej!!!
+    public string? Secret => configuration.GetSection(Section).GetSection("Secret").Value;
 }

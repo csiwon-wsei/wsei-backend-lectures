@@ -4,8 +4,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using web_api_jwt.Data;
 
-namespace web_api_jwt.Data;
+namespace web_api_jwt.Configuration;
 
 public static class Configure
 {
@@ -39,7 +40,7 @@ public static class Configure
             .AddDefaultTokenProviders();
     }
 
-    public static void ConfigureJWT(this IServiceCollection services, JwtSettings jwtSettings)
+    public static void ConfigureJwt(this IServiceCollection services, JwtSettings jwtSettings)
     {
         //var jwtSettings = configuration.GetSection(JwtSettings.Section);
         services.AddAuthorization(opt =>

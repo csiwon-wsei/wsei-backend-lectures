@@ -1,4 +1,5 @@
 using Microsoft.OpenApi.Models;
+using web_api_jwt.Configuration;
 using web_api_jwt.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddSingleton<JwtSettings>();
 builder.Services.ConfigureIdentity();
 builder.Services.ConfigureCors();
-builder.Services.ConfigureJWT(new JwtSettings(builder.Configuration));
+builder.Services.ConfigureJwt(new JwtSettings(builder.Configuration));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
